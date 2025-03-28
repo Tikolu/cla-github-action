@@ -1,6 +1,7 @@
 import { octokit } from './octokit'
 import { context } from '@actions/github'
 import { CommittersDetails } from './interfaces'
+import * as core from '@actions/core'
 
 
 
@@ -53,6 +54,7 @@ export default async function getCommitters(): Promise<CommittersDetails[]> {
         })
         response.repository.pullRequest.commits.edges.forEach(edge => {
             const committer = extractUserFromCommit(edge.node.commit)
+            core.info("COMITTER: " + JSON.stringify(committer))
             let user = {
                 name: committer.login || committer.name,
                 id: committer.databaseId || '',
